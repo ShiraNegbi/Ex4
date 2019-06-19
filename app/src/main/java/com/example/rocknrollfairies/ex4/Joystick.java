@@ -92,7 +92,16 @@ public class Joystick extends AppCompatActivity {
         public boolean onTouch(View v, MotionEvent e) {
             if(v.equals(this)) {
                 if(e.getAction() != e.ACTION_UP) {
-                    drawJoyStickView(e.getX(), e.getY());
+                    float displacement = (float) Math.sqrt(Math.pow(e.getX() - centerX, 2) + Math.pow(e.getY() - centerY, 2));
+                    if (displacement < baseRadius) {
+                        drawJoyStickView(e.getX(), e.getY());
+                    }
+                    else {
+                        float ratio = baseRadius / displacement;
+                        float constrainedX = centerX + (e.getX() - centerX) * ratio;
+                        float constrainedY = centerY + (e.getY() - centerY) * ratio;
+                        drawJoyStickView(constrainedX, constrainedY);
+                    }
                 }
                 else {
                     drawJoyStickView(centerX, centerY);
