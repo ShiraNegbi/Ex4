@@ -77,7 +77,8 @@
                 android:background="#70B030"
                 android:gravity="center_horizontal"
                 android:padding="20dp"
-                android:text="Connect" />
+                android:text="Connect"
+                android:onClick="connect"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
