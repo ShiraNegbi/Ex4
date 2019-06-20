@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Joystick"></activity>
+        <activity android:name=".Joystick" />
+        <!--
+        <activity android:name=".JoystickView"></activity>
+        -->
     </application>
 
 </manifest>
