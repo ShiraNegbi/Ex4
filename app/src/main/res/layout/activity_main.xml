@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_margin="15dp"
-                android:background="#FFFFFF" />
+                android:background="#FFFFFF"
+                android:id="@+id/ip"/>
         </LinearLayout>
 
         <LinearLayout
@@ -57,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_margin="15dp"
-                android:background="#FFFFFF" />
+                android:background="#FFFFFF"
+                android:id="@+id/port"/>
         </LinearLayout>
 
         <LinearLayout

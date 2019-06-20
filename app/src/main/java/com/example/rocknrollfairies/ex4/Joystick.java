@@ -25,10 +25,13 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
 
         Intent intent = getIntent();
         //JoystickView joystickView = new JoystickView(getApplicationContext());
-        //String msg = intent.getStringExtra("message");
+        String msgIp = intent.getStringExtra("messageIp");
+        String msgPort = intent.getStringExtra("messagePort");
 
-        //TextView textView = (TextView) findViewById(R.id.textViewMsg);
-        //textView.setText(msg);
+        TextView textViewIp = (TextView) findViewById(R.id.textIp);
+        TextView textViewPort = (TextView) findViewById(R.id.textPort);
+//        textViewIp.setText(msgIp);
+//        textViewPort.setText(msgPort);
     }
 
     @Override

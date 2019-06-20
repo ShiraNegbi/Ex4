@@ -15,10 +15,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void connect(View view) {
-        //EditText editText = (EditText)findViewById(R.id.editText);
+        EditText editTextIp = (EditText)findViewById(R.id.ip);
+        EditText editTextPort = (EditText)findViewById(R.id.port);
         Intent intent = new Intent(this, Joystick.class);
-        //String msg = editText.getText().toString();
-        //intent.putExtra("message", msg);
+        String msgIp = editTextIp.getText().toString();
+        String msgPort = editTextPort.getText().toString();
+        intent.putExtra("messageIp", msgIp);
+        intent.putExtra("messagePort", msgPort);
         startActivity(intent);
     }
 }
