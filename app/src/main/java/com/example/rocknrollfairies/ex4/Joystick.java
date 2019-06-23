@@ -14,8 +14,16 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
 
-public class Joystick extends AppCompatActivity implements JoystickView.JoystickListener {
+import static com.example.rocknrollfairies.ex4.Client.*;
 
+public class Joystick extends AppCompatActivity implements JoystickView.JoystickListener {
+    String msgIp;
+    String msgPort;
+    float x;
+    float y;
+    float coordinate;
+    String path;
+    Thread messageThread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,17 +33,100 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
 
         Intent intent = getIntent();
         //JoystickView joystickView = new JoystickView(getApplicationContext());
-        String msgIp = intent.getStringExtra("messageIp");
-        String msgPort = intent.getStringExtra("messagePort");
-
-        TextView textViewIp = (TextView) findViewById(R.id.textIp);
-        TextView textViewPort = (TextView) findViewById(R.id.textPort);
+        msgIp = intent.getStringExtra("messageIp");
+        msgPort = intent.getStringExtra("messagePort");
+        ConnectTask connect = new ConnectTask();
+        Thread connectThread = new Thread(connect);
+        connectThread.start();
+        SendMessage send = new SendMessage();
+        messageThread = new Thread(send);
+        //connect.run();
+//        TextView textViewIp = (TextView) findViewById(R.id.textIp);
+//        TextView textViewPort = (TextView) findViewById(R.id.textPort);
+//        String msgServer = "";
+//        try {
+//            Log.d("Client", "Trying to connect...");
+//            //Client client = Client.instance();
+//            Log.d("Client", "ip = " + msgIp + " port = " + Integer.parseInt(msgPort));
+//            Client.instance().connect(msgIp, Integer.parseInt(msgPort));
+//            //msgServer = client.sendMessage("aileron", 0.8);
+//            Log.d("Client", Client.instance().sendMessage("aileron", 0.8));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        TextView textViewServer = (TextView) findViewById(R.id.serverMessage);
+        //textViewServer.setText(msgServer);
 //        textViewIp.setText(msgIp);
 //        textViewPort.setText(msgPort);
     }
 
     @Override
     public void onJoystickMoved(float xPercent, float yPercent, int id) {
-        Log.d("Main method", "X percent: " + xPercent + " Y percent: " + yPercent);
+        //Log.d("Main method", "X percent: " + xPercent + " Y percent: " + yPercent);
+        coordinate = xPercent;
+        path = "aileron";
+        SendMessage send = new SendMessage();
+        messageThread = new Thread(send);
+        try {
+            messageThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        messageThread.start();
+//        try {
+//            Client.instance().sendMessage(path, coordinate);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        coordinate = yPercent;
+        path = "aileron";
+        messageThread = new Thread(send);
+        try {
+            messageThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        messageThread.start();
+//        SendMessage send = new SendMessage();
+//        Thread thread = new Thread(send);
+//        thread.start();
+//        try {
+//            Client.instance().sendMessage(path, coordinate);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    private class ConnectTask implements Runnable {
+        public void run() {
+//            try {
+//                val sAddress :InetAddress = Inet4Address.getByName(ip)
+//                socket = Socket(sAddress, Integer.parseInt(port))
+//                mBufferOut = PrintWriter(BufferedWriter(OutputStreamWriter(socket.getOutputStream())), true)
+//                mBufferIn = BufferedReader(InputStreamReader(socket.getInputStream()))
+//            } catch (e : Exception) {
+//                Log.e("Exception", e.message)
+//            }
+            try {
+                Log.d("Client", "Trying to connect...");
+                //Client client = Client.instance();
+                Log.d("Client", "ip = " + msgIp + " port = " + Integer.parseInt(msgPort));
+                Client.instance().connect(msgIp, Integer.parseInt(msgPort));
+                //msgServer = client.sendMessage("aileron", 0.8);
+                //Log.d("Client", Client.instance().sendMessage("aileron", 0.8));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class SendMessage implements Runnable {
+        public void run() {
+            try {
+                Client.instance().sendMessage(path, coordinate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
