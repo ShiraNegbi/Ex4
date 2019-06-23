@@ -115,8 +115,9 @@ class Client
             variable = mappedVariable;
         }
         sentence = "set" + " " + variable + " " + value + "\r\n";
-        outToServer.writeBytes(sentence);
-
+        synchronized (this) {
+            outToServer.writeBytes(sentence);
+        }
         // Get server's response
         modifiedSentence = inFromServer.readLine();
         //System.out.println("FROM SERVER: " + modifiedSentence);

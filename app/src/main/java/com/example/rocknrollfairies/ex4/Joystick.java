@@ -68,10 +68,10 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
         coordinate = xPercent;
         path = "aileron";
         SendMessage send = new SendMessage();
-        _mutex.lock();
+        //_mutex.lock();
         messageThread = new Thread(send);
         messageThread.start();
-        _mutex.unlock();
+        //_mutex.unlock();
 //        try {
 //            Client.instance().sendMessage(path, coordinate);
 //        } catch (Exception e) {
@@ -79,10 +79,10 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
 //        }
         coordinate = yPercent;
         path = "elevator";
-        _mutex.lock();
+        //_mutex.lock();
         messageThread = new Thread(send);
         messageThread.start();
-        _mutex.unlock();
+        //_mutex.unlock();
 //        SendMessage send = new SendMessage();
 //        Thread thread = new Thread(send);
 //        thread.start();
@@ -124,5 +124,22 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
                 e.printStackTrace();
             }
         }
+    }
+
+    private class Disconnect implements Runnable {
+        public void run() {
+            try {
+                Client.instance().disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Thread thread = new Thread(new Disconnect());
+        thread.start();
     }
 }
