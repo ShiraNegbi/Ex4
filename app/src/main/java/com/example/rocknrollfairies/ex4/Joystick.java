@@ -13,7 +13,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.TextView;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import static com.example.rocknrollfairies.ex4.Client.*;
 
 public class Joystick extends AppCompatActivity implements JoystickView.JoystickListener {
@@ -24,6 +25,7 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
     float coordinate;
     String path;
     Thread messageThread;
+    private final Lock _mutex = new ReentrantLock(true);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,27 +68,21 @@ public class Joystick extends AppCompatActivity implements JoystickView.Joystick
         coordinate = xPercent;
         path = "aileron";
         SendMessage send = new SendMessage();
+        _mutex.lock();
         messageThread = new Thread(send);
-        try {
-            messageThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         messageThread.start();
+        _mutex.unlock();
 //        try {
 //            Client.instance().sendMessage(path, coordinate);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
         coordinate = yPercent;
-        path = "aileron";
+        path = "elevator";
+        _mutex.lock();
         messageThread = new Thread(send);
-        try {
-            messageThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         messageThread.start();
+        _mutex.unlock();
 //        SendMessage send = new SendMessage();
 //        Thread thread = new Thread(send);
 //        thread.start();
